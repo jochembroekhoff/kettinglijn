@@ -1,13 +1,24 @@
 package nl.jochembroekhoff.kettinglijn;
 
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
     public static void main(String... args) {
-        DoublePoint A = new DoublePoint(0, 0);
-        DoublePoint B = new DoublePoint(5, 3);
-        double ropeLength = 20;
+        launch(args);
+    }
 
-        Catenary line = new Catenary(A, B, ropeLength);
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/ChartDisplay.fxml"));
 
-        System.out.println("f(5) = " + line.calculateY(5));
+        Scene scene = new Scene(root);
+
+        stage.setTitle("Catenary Chart Test");
+        stage.setScene(scene);
+        stage.show();
     }
 }
