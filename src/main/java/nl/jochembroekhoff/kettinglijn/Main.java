@@ -6,8 +6,8 @@ public class Main {
         DoublePoint B = new DoublePoint(5, 3);
         double ropeLength = 20;
 
-        Kettinglijn line = new Kettinglijn(A, B, ropeLength);
+        Catenary line = new Catenary(A, B, ropeLength);
 
-        System.out.println(line.calculateY(5));
+        System.out.println("f(5) = " + line.calculateY(5));
     }
 }

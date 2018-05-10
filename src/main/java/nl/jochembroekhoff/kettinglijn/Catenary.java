@@ -3,7 +3,7 @@ package nl.jochembroekhoff.kettinglijn;
 import nl.jochembroekhoff.kettinglijn.formula.CatenaryFormula;
 import nl.jochembroekhoff.kettinglijn.formula.SlopeLineFormula;
 
-public class Kettinglijn {
+public class Catenary {
 
     public static final double STRAIGHT_THRESHOLD = 0.1;
 
@@ -17,13 +17,18 @@ public class Kettinglijn {
     private CatenaryFormula catenaryFormula;
 
     /**
-     * Point A must be to the left of Point B.
+     * Create a new instance of Catenary.
+     * Based on the distance between pointA and pointB and the ropeLength,
+     * this class makes use of the {@link SlopeLineFormula} or {@link CatenaryFormula}.
      *
-     * @param pointA
-     * @param pointB
-     * @param ropeLength
+     * <p>
+     * Note: Point A must be to the left of Point B.
+     *
+     * @param pointA     Most left point on the catenary line.
+     * @param pointB     Most right point on the catenary line.
+     * @param ropeLength Length of the line between pointA and pointB.
      */
-    public Kettinglijn(DoublePoint pointA, DoublePoint pointB, double ropeLength) {
+    public Catenary(DoublePoint pointA, DoublePoint pointB, double ropeLength) {
 
         if (pointA.getX() >= pointB.getX())
             throw new IllegalArgumentException("Point A most be to the left of Point B.");
@@ -59,11 +64,15 @@ public class Kettinglijn {
             return slopeLineFormula.calculate(x);
         }
 
-        if (catenaryFormula == null)
+        if (catenaryFormula == null) {
+            long start = System.currentTimeMillis();
             catenaryFormula = new CatenaryFormula(pointA, pointB, ropeLength);
+            long end = System.currentTimeMillis();
+
+            System.out.printf("Constructing the catenary took %d ms\n", end - start);
+        }
 
         return catenaryFormula.calculate(x);
     }
-
 
 }

@@ -4,6 +4,9 @@ import nl.jochembroekhoff.kettinglijn.DoublePoint;
 
 public class CatenaryFormula extends Formula {
 
+    /**
+     * How many approximation cycles should be done.
+     */
     private static long APPROX__CYCLES = 1000;
     private static double APPROX__INCREMENT_START = .1;
     private static double APPROX__INCREMENT_MIN = 1e-20;
@@ -19,6 +22,14 @@ public class CatenaryFormula extends Formula {
      */
     private final double offsetY;
 
+    /**
+     * Construct a new instance of the {@link CatenaryFormula}.
+     * Upon construction, the value of the catenary constant is approximated.
+     *
+     * @param pointA     A point on the line.
+     * @param pointB     Another point on the line.
+     * @param ropeLength How long the line between the two points.
+     */
     public CatenaryFormula(DoublePoint pointA, DoublePoint pointB, double ropeLength) {
 
         // Approximate the curve radius
@@ -57,18 +68,48 @@ public class CatenaryFormula extends Formula {
         offsetY = pointA.getY() - calculate(pointA.getX(), curveRadius);
     }
 
+    /**
+     * Calculate the value of the primitive formula of the arc length.
+     * How the formula has been made: <code>∫ √(1 + [a*cosh(x/a)]') dx</code> &rarr; <code>a*sinh(x/a)</code>.
+     *
+     * @param x           X position to be used.
+     * @param curveRadius Catenary specific constant.
+     * @return The calculated value.
+     */
     public static double calculatePrimitiveLineLength(double x, double curveRadius) {
         return curveRadius * Math.sinh(x / curveRadius);
     }
 
+    /**
+     * Calculate the line length between two X values.
+     *
+     * @param x1          Most left X.
+     * @param x2          Most right X.
+     * @param curveRadius Catenary specific constant.
+     * @return The length of the line between x1 and x2.
+     */
     public static double length(double x1, double x2, double curveRadius) {
         return calculatePrimitiveLineLength(x2, curveRadius) - calculatePrimitiveLineLength(x1, curveRadius);
     }
 
+    /**
+     * Calculate the Y position of the catenary line.
+     *
+     * @param x           The X position to be used to calculate the appropriate Y value.
+     * @param curveRadius Catenary specific constant.
+     * @return The Y position for the given X position.
+     */
     public static double calculate(double x, double curveRadius) {
         return curveRadius * Math.cosh(x / curveRadius);
     }
 
+    /**
+     * Calculate the Y position of the catenary line.
+     * The required catenary constant is used and necessary X- and Y-offsets are added.
+     *
+     * @param x The X position to be used to calculate the appropriate Y value.
+     * @return The Y position for the given X position.
+     */
     @Override
     public double calculate(double x) {
         return calculate(x - offsetX, curveRadius) + offsetY;
