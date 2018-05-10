@@ -70,7 +70,7 @@ public class CatenaryFormula extends Formula {
 
     /**
      * Calculate the value of the primitive formula of the arc length.
-     * How the formula has been made: <code>∫ √(1 + [a*cosh(x/a)]') dx</code> &rarr; <code>a*sinh(x/a)</code>.
+     * How the formula has been made: <code>∫ √(1 + ([a*cosh(x/a)]')^2) dx</code> &rarr; <code>a*sinh(x/a)</code>.
      *
      * @param x           X position to be used.
      * @param curveRadius Catenary specific constant.
